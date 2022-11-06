@@ -1,6 +1,6 @@
 [![Gem Version](https://badge.fury.io/rb/notenote.svg)](https://badge.fury.io/rb/notenote)
 
-# Note :videocassette:
+# Note :pencil:
 
 `notenote` is a gem for keeping a daily log of everything.
 
