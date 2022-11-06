@@ -28,7 +28,9 @@ module Note
         notes_folder_full_path = File.join(Dir.pwd, notes_folder)
 
         create_config_file(notes_folder: notes_folder_full_path)
+        create_readme_file
         create_note_file
+
 
         puts %(Your note folder "#{notes_folder}" and the first log file are created. You're ready to go! 🚀)
 
@@ -40,7 +42,7 @@ module Note
         create_note_file(file_name: "#{file_name}.md")
 
         0
-      elsif args.first == "edit"
+      elsif args.first == "all"
         notes_folder = notenote_config["notes_folder"]
 
         open_editor(path: notes_folder)
@@ -71,6 +73,20 @@ module Note
     end
 
     private
+
+    def create_readme_file
+      notes_folder = notenote_config["notes_folder"]
+
+      readme_file = File.join(notes_folder, "README.md")
+
+      File.open(readme_file, "w") do |file|
+        file.puts unindent <<-TEXT
+          # Daily notes
+
+
+        TEXT
+      end
+    end
 
     def create_config_file(notes_folder:)
       config_template = File.read(File.join(File.dirname(__FILE__), "config.json.template"))

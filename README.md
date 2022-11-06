@@ -30,9 +30,9 @@ Generate a website based on all notes:
 
 `note web`
 
-Open editor with notes folder:
+Open editor with all notes:
 
-`note edit`
+`note all`
 
 ## Development
 
