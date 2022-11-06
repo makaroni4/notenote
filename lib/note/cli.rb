@@ -65,6 +65,10 @@ module Note
         END
 
         0
+      elsif args.first == "push"
+        push_notes
+
+        0
       else
         puts "Hm, I don't know this command 🤔"
 
@@ -104,8 +108,9 @@ module Note
 
     def create_note_file(file_name: "notes.md")
       notes_folder = notenote_config["notes_folder"]
+      date_format = notenote_config["date_format"]
 
-      today_folder = File.join(notes_folder, Time.now.strftime("%d-%m-%Y"))
+      today_folder = File.join(notes_folder, Time.now.strftime(date_format))
 
       Dir.mkdir(today_folder) unless Dir.exist?(today_folder)
 
@@ -138,6 +143,55 @@ module Note
 
     def unindent(str)
       str.gsub(/^#{str.scan(/^[ \t]+(?=\S)/).min}/, "")
+    end
+
+    # This function parses the output of diffstat:
+    #
+    # git diff HEAD | diffstat -Cm
+    #
+    #  notes.md   |    2 ++
+    #  testing.md |    5 ----!
+    #  2 files changed, 2 insertions(+), 4 deletions(-), 1 modification(!)
+    #
+    # { "+" => 2, "-" => 4, "!" => 1}
+    def git_diff_stat
+      Dir.chdir(notenote_config["notes_folder"])
+
+      raw_diffstat = `git diff HEAD | diffstat -Cm`
+
+      raw_changes = raw_diffstat.split("\n").last.split(",").map(&:strip)
+
+      raw_changes.each_with_object({}) do |change, o|
+        next unless change =~ /[\+\-\!]/
+
+        type = change.scan(/([\+\-\!])/)[0][0]
+        num = change.scan(/\A(\d+)\s/)[0][0]
+
+        o[type] = num
+      end
+    end
+
+    def notes_changed_or_deleted?
+      diff_stat = git_diff_stat
+
+      diff_stat.member?("-") || diff_stat.member?("!")
+    end
+
+    def push_notes
+      if notes_changed_or_deleted?
+        puts "Some of the notes were mofified or deleted. Please, check them up and push manually."
+        return
+      end
+
+      Dir.chdir(notenote_config["notes_folder"])
+
+      system "git add ."
+
+      system %(git commit -m "#{notenote_config["commit_message"]}")
+
+      system "git push"
+
+      puts "Pushed. ✅"
     end
   end
 end

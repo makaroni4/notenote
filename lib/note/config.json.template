@@ -1,5 +1,6 @@
 {
   "notes_folder": "%{notes_folder}",
+  "date_format": "%d-%m-%Y",
   "editor_command": "code",
   "commit_message": "Added new notes"
 }

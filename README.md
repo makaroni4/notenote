@@ -10,29 +10,52 @@ Install a Ruby gem:
 
 `gem install notenote`
 
-Initialize a folder for your follows (it'll also create a `.note` config file):
+Initialize a folder for your daily notes:
 
 `note init %FOLDER_NAME%`
+
+## Config
+
+`note init` command also generates a `.notenote` config file in your home folder:
+
+```
+{
+  "notes_folder": "%FOLDER_NAME%",
+  "date_format": "%d-%m-%Y",
+  "editor_command": "code",
+  "commit_message": "Added new notes"
+}
+
+```
+
+## Using
 
 Create today's note file:
 
 `note`
 
-You can create custom note files. They'll be added to today's folder:
+You can create custom note files:
 
-`note on tax return`
+```bash
+note on tax return
 
-Sync new notes to Github:
+// will create a new note file in today's folder:
+// 05-11-2022/tax_return.md
+```
 
-`note sync`
+Push new notes to Github with a default:
 
-Generate a website based on all notes:
-
-`note web`
+`note push`
 
 Open editor with all notes:
 
 `note all`
+
+## Markdown
+
+All notes are created as Markdown files. I personally like the Kramdown version:
+
+https://kramdown.gettalong.org/quickref.html
 
 ## Development
 
