@@ -1,0 +1,6 @@
+#!/usr/bin/env ruby
+
+require "note"
+require "note/cli"
+
+exit Note::CLI.new.run(ARGV)
