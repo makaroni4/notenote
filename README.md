@@ -14,6 +14,17 @@ Initialize a folder for your daily notes:
 
 `note init %FOLDER_NAME%`
 
+:warning: Note that although the name of the gem is **notenote** (**note** is already taken), the CLI command is `note` for simplicity.
+
+I also highly encourage using aliases to save time typing. If you're using [Zsh](https://github.com/ohmyzsh/ohmyzsh), I'd recommend going 1 letter:
+
+```
+alias n="note"
+alias non="note on"
+alias np="note push!"
+alias na="note all"
+```
+
 ## Config
 
 `note init` command also generates a `.notenote` config file in your home folder:
