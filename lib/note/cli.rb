@@ -25,7 +25,9 @@ module Note
           Dir.mkdir(notes_folder)
         end
 
-        create_config_file(notes_folder: notes_folder)
+        notes_folder_full_path = File.join(Dir.pwd, notes_folder)
+
+        create_config_file(notes_folder: notes_folder_full_path)
         create_note_file
 
         puts %(Your note folder "#{notes_folder}" and the first log file are created. You're ready to go! 🚀)
@@ -36,6 +38,29 @@ module Note
         file_name = note_name.gsub(/[^a-z0-9\-]+/, "_")
 
         create_note_file(file_name: "#{file_name}.md")
+
+        0
+      elsif args.first == "edit"
+        notes_folder = notenote_config["notes_folder"]
+
+        open_editor(path: notes_folder)
+
+        0
+      elsif args.first == "folder"
+        unless mac?
+          puts "Unfortunately, this command works only on Mac devices atm. Please, make a PR to support your OS. 🙏"
+        end
+
+        notes_folder = notenote_config["notes_folder"]
+
+        osascript <<-END
+          tell application "Terminal"
+            activate
+            tell application "System Events" to keystroke "t" using command down
+            do script "cd #{notes_folder}" in front window
+            do script "clear" in front window
+          end tell
+        END
 
         0
       else
@@ -72,7 +97,7 @@ module Note
 
       FileUtils.touch(note_file)
 
-      open_editor(file: note_file)
+      open_editor(path: note_file)
     end
 
     def notenote_config
@@ -81,10 +106,22 @@ module Note
       JSON.parse(File.read(config_file))
     end
 
-    def open_editor(note_file:)
+    def open_editor(path:)
       editor_command = notenote_config["editor_command"]
 
-      system("#{editor_command} #{note_file}")
+      system("#{editor_command} #{path}")
+    end
+
+    def mac?
+      RbConfig::CONFIG["host_os"] =~ /darwin/
+    end
+
+    def osascript(script)
+      system "osascript", *unindent(script).split(/\n/).map { |line| ['-e', line] }.flatten
+    end
+
+    def unindent(str)
+      str.gsub(/^#{str.scan(/^[ \t]+(?=\S)/).min}/, "")
     end
   end
 end

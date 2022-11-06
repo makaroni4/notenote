@@ -1,4 +1,5 @@
 {
   "notes_folder": "%{notes_folder}",
-  "editor_command": "code"
+  "editor_command": "code",
+  "commit_message": "Added new notes"
 }

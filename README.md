@@ -30,6 +30,10 @@ Generate a website based on all notes:
 
 `note web`
 
+Open editor with notes folder:
+
+`note edit`
+
 ## Development
 
 To test changes locally run:
