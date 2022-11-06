@@ -99,9 +99,9 @@ module Note
     def create_config_file(notes_folder:)
       config_template = File.read(File.join(File.dirname(__FILE__), "config.json.template"))
 
-      config = config_template % {
+      config = safe_tt(config_template, {
         notes_folder: notes_folder
-      }
+      })
 
       config_file = File.join(Dir.home, ".notenote")
 
@@ -196,6 +196,18 @@ module Note
       system "git push"
 
       puts "Pushed. ✅"
+    end
+
+    # A custom string format method to avoid type
+    # errors when using str % hash.
+    def safe_tt(str, hash)
+      str_copy = str
+
+      hash.each do |key, value|
+        str_copy.gsub!("%{#{key}}", value.to_s)
+      end
+
+      str_copy
     end
   end
 end
