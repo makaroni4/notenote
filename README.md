@@ -18,11 +18,15 @@ Create today's note file:
 
 `note`
 
-Create a custom file, it'll be automatically linked to today's note file:
+You can create custom note files. They'll be added to today's folder:
 
-`note %FILE_NAME%`
+`note on tax return`
 
-Generate a website based on all follows:
+Sync new notes to Github:
+
+`note sync`
+
+Generate a website based on all notes:
 
 `note web`
 
