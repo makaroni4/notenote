@@ -37,9 +37,8 @@ module Note
         0
       elsif args.first == "on"
         note_name = args[1..-1].join(" ") # "tax return" for `note on tax return``
-        file_name = note_name.gsub(/[^a-z0-9\-]+/, "_")
 
-        create_note_file(file_name: "#{file_name}.md")
+        create_note_file(note_name: note_name)
 
         0
       elsif args.first == "all"
@@ -110,7 +109,7 @@ module Note
       end
     end
 
-    def create_note_file(file_name: "notes.md")
+    def create_note_file(note_name: "notes")
       notes_folder = notenote_config["notes_folder"]
       date_format = notenote_config["date_format"]
 
@@ -118,9 +117,24 @@ module Note
 
       Dir.mkdir(today_folder) unless Dir.exist?(today_folder)
 
+      file_name = note_name.strip.downcase.
+        gsub(/[^a-z0-9\-]+/, "_").
+        gsub(/\A\_+/, "").
+        gsub(/\_+\z/, "").
+        concat(".md")
       note_file = File.join(today_folder, file_name)
 
-      FileUtils.touch(note_file)
+      if File.exist?(note_file)
+        puts "This note already exists. ⚠️"
+      else
+        File.open(note_file, "w") do |file|
+          file.puts unindent <<-TEXT
+            # #{note_name}
+
+
+          TEXT
+        end
+      end
 
       open_editor(path: note_file)
     end

@@ -43,28 +43,32 @@ alias na="note all"
 
 Create today's note file:
 
-`note`
+### `note`
 
 You can create custom note files:
 
-```bash
-note on tax return
+### `note on tax return`
 
-// will create a new note file in today's folder:
+```bash
+// It will create a new note file in today's folder:
 // 05-11-2022/tax_return.md
 ```
 
+Special characters break `note on` command. If you see an error like `No matches found` in the terminal, try using quotation marks for note's name:
+
+`note on 'How Are You Doing?'`
+
 Push new notes to Github with a default commit message from the `.notenote` config:
 
-`note push`
+### `note push`
 
 By default, `note push` will push only if there were no changes or deletions in your notes. If you want to push everything run:
 
-`note push!`
+### `note push!`
 
 Open editor with all notes:
 
-`note all`
+### `note all`
 
 ## Markdown
 
