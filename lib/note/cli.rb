@@ -69,6 +69,10 @@ module Note
         push_notes
 
         0
+      elsif args.first == "push!"
+        push_notes(force: true)
+
+        0
       else
         puts "Hm, I don't know this command 🤔"
 
@@ -177,8 +181,8 @@ module Note
       diff_stat.member?("-") || diff_stat.member?("!")
     end
 
-    def push_notes
-      if notes_changed_or_deleted?
+    def push_notes(force: false)
+      if !force && notes_changed_or_deleted?
         puts "Some of the notes were mofified or deleted. Please, check them up and push manually."
         return
       end

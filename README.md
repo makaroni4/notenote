@@ -43,9 +43,13 @@ note on tax return
 // 05-11-2022/tax_return.md
 ```
 
-Push new notes to Github with a default:
+Push new notes to Github with a default commit message from the `.notenote` config:
 
 `note push`
+
+By default, `note push` will push only if there were no changes or deletions in your notes. If you want to push everything run:
+
+`note push!`
 
 Open editor with all notes:
 
