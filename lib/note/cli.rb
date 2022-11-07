@@ -2,6 +2,7 @@
 
 require "optparse"
 require "json"
+require "date"
 
 $LOAD_PATH << File.expand_path(__dir__)
 
@@ -226,7 +227,7 @@ module Note
     def formatted_todays_date
       date_format = notenote_config["date_format"]
 
-      Time.now.strftime(date_format)
+      Date.today.strftime(date_format)
     end
   end
 end
