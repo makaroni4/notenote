@@ -65,6 +65,8 @@ module Note
         END
 
         0
+      elsif args.first == "pull"
+        pull_notes
       elsif args.first == "push"
         push_notes
 
@@ -74,7 +76,16 @@ module Note
 
         0
       else
-        puts "Hm, I don't know this command 🤔"
+        notes_folder = notenote_config["notes_folder"]
+
+        today_folder = File.join(notes_folder, formatted_todays_date)
+        today_note_file = File.join(today_folder, "#{notenote_config["default_note_file_name"]}.md")
+
+        if File.exist?(today_note_file)
+          open_editor(path: today_note_file)
+        else
+          create_note_file
+        end
 
         0
       end
@@ -110,7 +121,7 @@ module Note
       end
     end
 
-    def create_note_file(note_name: "notes")
+    def create_note_file(note_name: "#{notenote_config["default_note_file_name"]}.md")
       notes_folder = notenote_config["notes_folder"]
 
       today_folder = File.join(notes_folder, formatted_todays_date)
@@ -210,6 +221,12 @@ module Note
       system "git push"
 
       puts "Pushed. ✅"
+    end
+
+    def pull_notes
+      Dir.chdir(notenote_config["notes_folder"])
+
+      system "git pull --ff-only"
     end
 
     # A custom string format method to avoid type

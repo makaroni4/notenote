@@ -41,13 +41,17 @@ alias na="note all"
 
 ## Using
 
-Create today's note file:
-
 ### `note`
 
-You can create custom note files:
+`note` create today's note file
+
+```bash
+// 05-11-2022/notes.md
+```
 
 ### `note on tax return`
+
+`note on` creates a custom note file:
 
 ```bash
 // It will create a new note file in today's folder:
@@ -67,6 +71,10 @@ By default, `note push` will push only if there were no changes or deletions in 
 ### `note push!`
 
 Open editor with all notes:
+
+### `note pull`
+
+`note pull` simply does `git pull --ff-only` to safely pull new notes from Github.
 
 ### `note all`
 
