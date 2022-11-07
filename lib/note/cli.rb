@@ -75,7 +75,7 @@ module Note
         push_notes(force: true)
 
         0
-      else
+      elsif args.size == 0
         notes_folder = notenote_config["notes_folder"]
 
         today_folder = File.join(notes_folder, formatted_todays_date)
@@ -88,6 +88,8 @@ module Note
         end
 
         0
+      else
+        puts "Hm, looks like there's no such command. 🤔"
       end
     end
 
