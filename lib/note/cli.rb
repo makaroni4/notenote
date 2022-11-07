@@ -111,9 +111,8 @@ module Note
 
     def create_note_file(note_name: "notes")
       notes_folder = notenote_config["notes_folder"]
-      date_format = notenote_config["date_format"]
 
-      today_folder = File.join(notes_folder, Time.now.strftime(date_format))
+      today_folder = File.join(notes_folder, formatted_todays_date)
 
       Dir.mkdir(today_folder) unless Dir.exist?(today_folder)
 
@@ -222,6 +221,12 @@ module Note
       end
 
       str_copy
+    end
+
+    def formatted_todays_date
+      date_format = notenote_config["date_format"]
+
+      Time.now.strftime(date_format)
     end
   end
 end
