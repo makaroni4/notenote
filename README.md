@@ -66,17 +66,23 @@ Push new notes to Github with a default commit message from the `.notenote` conf
 
 ### `note push`
 
-By default, `note push` will push only if there were no changes or deletions in your notes. If you want to push everything run:
+By default, `note push` will commit and push only if there were no changes or deletions in your notes.
 
 ### `note push!`
 
-Open editor with all notes:
+`note push!` doesn't do any checks, it commits and pushes all your changes.
 
 ### `note pull`
 
 `note pull` simply does `git pull --ff-only` to safely pull new notes from Github.
 
 ### `note all`
+
+Opens note folder in your editor.
+
+### `note version`
+
+Prints out the current `notenote` version.
 
 ## Markdown
 

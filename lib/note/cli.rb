@@ -75,6 +75,10 @@ module Note
         push_notes(force: true)
 
         0
+      elsif args.first == "version"
+        puts Note::VERSION
+
+        0
       elsif args.size == 0
         notes_folder = notenote_config["notes_folder"]
 
@@ -90,6 +94,8 @@ module Note
         0
       else
         puts "Hm, looks like there's no such command. 🤔"
+
+        0
       end
     end
 
