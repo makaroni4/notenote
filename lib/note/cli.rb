@@ -35,7 +35,6 @@ module Note
         create_readme_file
         create_note_file
 
-
         puts %(Your note folder "#{notes_folder}" and the first log file are created. You're ready to go! 🚀)
 
         0

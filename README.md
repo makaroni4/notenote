@@ -46,7 +46,7 @@ alias na="note all"
 `note` create today's note file
 
 ```bash
-// 05-11-2022/notes.md
+// 05-11-2022/today.md
 ```
 
 ### `note on tax return`
