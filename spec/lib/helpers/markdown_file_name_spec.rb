@@ -1,5 +1,5 @@
 require "spec_helper"
-require_relative "../../lib/note/helpers"
+require_relative "../../../lib/note/helpers"
 
 describe Helpers do
   describe "#markdown_file_name" do

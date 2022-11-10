@@ -8,4 +8,11 @@ module Helpers
       gsub(/\_+\z/, "").
       concat(".md")
   end
+
+  def upcate_first(str)
+    return if str.nil?
+    return "" if str.empty?
+
+    str.tap { |s| s[0] = s[0].upcase }
+  end
 end

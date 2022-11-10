@@ -147,7 +147,7 @@ module Note
       else
         File.open(note_file, "w") do |file|
           file.puts unindent <<-TEXT
-            # #{note_name.capitalize}
+            # #{upcate_first(note_name)}
 
 
           TEXT
