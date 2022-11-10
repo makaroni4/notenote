@@ -3,11 +3,14 @@
 require "optparse"
 require "json"
 require "date"
+require_relative "helpers"
 
 $LOAD_PATH << File.expand_path(__dir__)
 
 module Note
   class CLI
+    include Helpers
+
     def run(args = [])
       if args.first == "init"
         require "fileutils"
@@ -136,11 +139,8 @@ module Note
 
       Dir.mkdir(today_folder) unless Dir.exist?(today_folder)
 
-      file_name = note_name.strip.downcase.
-        gsub(/[^a-z0-9\-]+/, "_").
-        gsub(/\A\_+/, "").
-        gsub(/\_+\z/, "").
-        concat(".md")
+      file_name = markdown_file_name(note_name: note_name)
+
       note_file = File.join(today_folder, file_name)
 
       if File.exist?(note_file)
