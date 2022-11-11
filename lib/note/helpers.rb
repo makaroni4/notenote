@@ -19,6 +19,8 @@ module Helpers
   # A custom string format method to avoid type
   # errors when using str % hash.
   def hash_format(str, hash)
+    return if str.nil?
+
     str_copy = str.dup
 
     hash.each do |key, value|
@@ -26,5 +28,24 @@ module Helpers
     end
 
     str_copy
+  end
+
+  def unindent(str)
+    return if str.nil?
+
+    str_copy = str.dup
+    lines = str_copy.split("\n")
+
+    first_char = str_copy[0]
+
+    while lines.all? { |l| l.start_with?(first_char) } &&
+      (first_char == " " || first_char == "\t")
+
+      lines.map! { |l| l[1..-1] }
+
+      first_char = lines.first[0]
+    end
+
+    return lines.join("\n")
   end
 end

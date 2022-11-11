@@ -177,10 +177,6 @@ module Note
       system "osascript", *unindent(script).split(/\n/).map { |line| ['-e', line] }.flatten
     end
 
-    def unindent(str)
-      str.gsub(/^#{str.scan(/^[ \t]+(?=\S)/).min}/, "")
-    end
-
     # This function parses the output of diffstat:
     #
     # git diff HEAD | diffstat -Cm

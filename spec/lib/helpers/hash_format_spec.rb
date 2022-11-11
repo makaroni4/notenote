@@ -26,5 +26,29 @@ describe Helpers do
         expect(str).to eq("90% %{foo} %{bar} %{foo}")
       end
     end
+
+    context "when argument is nil" do
+      let(:str) { nil }
+      let(:hash) do
+        {
+          foo: "123",
+          bar: "456"
+        }
+      end
+
+      it { is_expected.to eq(nil) }
+    end
+
+    context "when argument is an empty string" do
+      let(:str) { "" }
+      let(:hash) do
+        {
+          foo: "123",
+          bar: "456"
+        }
+      end
+
+      it { is_expected.to eq("") }
+    end
   end
 end
