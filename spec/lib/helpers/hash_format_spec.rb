@@ -19,6 +19,12 @@ describe Helpers do
       end
 
       it { is_expected.to eq("90% 123 456 123") }
+
+      it "does not mutate str argument" do
+        hash_format
+
+        expect(str).to eq("90% %{foo} %{bar} %{foo}")
+      end
     end
   end
 end

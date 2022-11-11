@@ -19,7 +19,7 @@ module Helpers
   # A custom string format method to avoid type
   # errors when using str % hash.
   def hash_format(str, hash)
-    str_copy = str
+    str_copy = str.dup
 
     hash.each do |key, value|
       str_copy.gsub!("%{#{key}}", value.to_s)
