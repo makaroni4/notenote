@@ -120,7 +120,7 @@ module Note
     def create_config_file(notes_folder:)
       config_template = File.read(File.join(File.dirname(__FILE__), "config.json.template"))
 
-      config = safe_tt(config_template, {
+      config = hash_format(config_template, {
         notes_folder: notes_folder
       })
 
@@ -234,18 +234,6 @@ module Note
       Dir.chdir(notenote_config["notes_folder"])
 
       system "git pull --ff-only"
-    end
-
-    # A custom string format method to avoid type
-    # errors when using str % hash.
-    def safe_tt(str, hash)
-      str_copy = str
-
-      hash.each do |key, value|
-        str_copy.gsub!("%{#{key}}", value.to_s)
-      end
-
-      str_copy
     end
 
     def formatted_todays_date
