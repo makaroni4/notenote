@@ -169,14 +169,6 @@ module Note
       system("#{editor_command} #{path}")
     end
 
-    def mac?
-      RbConfig::CONFIG["host_os"] =~ /darwin/
-    end
-
-    def osascript(script)
-      system "osascript", *unindent(script).split(/\n/).map { |line| ['-e', line] }.flatten
-    end
-
     # This function parses the output of diffstat:
     #
     # git diff HEAD | diffstat -Cm

@@ -48,4 +48,12 @@ module Helpers
 
     return lines.join("\n")
   end
+
+  def mac?
+    RbConfig::CONFIG["host_os"] =~ /darwin/
+  end
+
+  def osascript(script)
+    system "osascript", *unindent(script).split(/\n/).map { |line| ["-e", line] }.flatten
+  end
 end
