@@ -1,7 +1,8 @@
 {
+  "version": 1,
   "notes_folder": "%{notes_folder}",
   "date_format": "%d-%m-%Y",
-  "default_note_file_name: "today",
+  "default_note_file_name": "today",
   "editor_command": "code",
   "commit_message": "Added new notes"
 }

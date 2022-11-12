@@ -29,6 +29,26 @@ module Note
           Dir.mkdir(notes_folder)
         end
 
+        vscode_config_folder = File.join(notes_folder, ".vscode")
+        unless Dir.exists?(vscode_config_folder)
+          Dir.mkdir(vscode_config_folder)
+        end
+
+        vscode_settings_file = File.join(vscode_config_folder, "settings.json")
+        if File.exist?(vscode_settings_file)
+          vscode_settings = JSON.parse(File.read(vscode_settings_file))
+
+          vscode_settings["markdown.editor.drop.enabled"] = false
+
+          File.open(vscode_settings_file, "w") do |f|
+            f.puts(JSON.pretty_generate(vscode_settings))
+          end
+        else
+          File.open(vscode_settings_file, "w") do |f|
+            f.puts(JSON.pretty_generate({ "markdown.editor.drop.enabled": false }))
+          end
+        end
+
         notes_folder_full_path = File.join(Dir.pwd, notes_folder)
 
         create_config_file(notes_folder: notes_folder_full_path)
@@ -118,13 +138,18 @@ module Note
     end
 
     def create_config_file(notes_folder:)
+      config_file = File.join(Dir.home, ".notenote")
+
+      if File.exist?(config_file)
+        puts "📢 You already have a config file: ~/.notenote"
+        return
+      end
+
       config_template = File.read(File.join(File.dirname(__FILE__), "config.json.template"))
 
       config = hash_format(config_template, {
         notes_folder: notes_folder
       })
-
-      config_file = File.join(Dir.home, ".notenote")
 
       File.open(config_file, "w") do |f|
         f.puts(config)
