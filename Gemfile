@@ -1,7 +1,10 @@
 source "https://rubygems.org"
 
+require "pp"
+
 gemspec
 
-gem "rubocop"
-
-gem "coveralls", require: false
+group :test do
+  gem "fakefs", require: false
+  gem "coveralls", require: false
+end

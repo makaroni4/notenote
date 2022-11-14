@@ -1,6 +1,7 @@
 require "bundler/setup"
 require "byebug"
 require "note"
+require "fakefs/spec_helpers"
 
 if ENV["TRAVIS"]
   require "coveralls"
@@ -14,4 +15,6 @@ RSpec.configure do |config|
   config.expect_with :rspec do |c|
     c.syntax = :expect
   end
+
+  config.include FakeFS::SpecHelpers
 end

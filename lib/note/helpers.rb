@@ -13,7 +13,7 @@ module Helpers
     return if str.nil?
     return "" if str.empty?
 
-    str.tap { |s| s[0] = s[0].upcase }
+    str.dup.tap { |s| s[0] = s[0].upcase }
   end
 
   # A custom string format method to avoid type

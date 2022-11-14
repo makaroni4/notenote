@@ -11,10 +11,10 @@ module Note
   class CLI
     include Helpers
 
+    CONFIG_FILE_NAME = ".notenote"
+
     def run(args = [])
       if args.first == "init"
-        require "fileutils"
-
         notes_folder = args[1]
 
         if notes_folder.nil?
@@ -138,10 +138,10 @@ module Note
     end
 
     def create_config_file(notes_folder:)
-      config_file = File.join(Dir.home, ".notenote")
+      config_file = File.join(Dir.home, CONFIG_FILE_NAME)
 
       if File.exist?(config_file)
-        puts "📢 You already have a config file: ~/.notenote"
+        puts "📢 You already have a config file: ~/#{CONFIG_FILE_NAME}"
         return
       end
 
@@ -183,7 +183,7 @@ module Note
     end
 
     def notenote_config
-      config_file = File.join(Dir.home, ".notenote")
+      config_file = File.join(Dir.home, CONFIG_FILE_NAME)
 
       JSON.parse(File.read(config_file))
     end
