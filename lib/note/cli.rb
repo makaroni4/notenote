@@ -156,7 +156,7 @@ module Note
       end
     end
 
-    def create_note_file(note_name: "#{notenote_config["default_note_file_name"]}.md")
+    def create_note_file(note_name: notenote_config["default_note_file_name"])
       notes_folder = notenote_config["notes_folder"]
 
       today_folder = File.join(notes_folder, formatted_todays_date)
