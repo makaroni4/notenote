@@ -1,9 +1,11 @@
 require "spec_helper"
 require_relative "../../../../lib/note/cli"
+require_relative "../../../../lib/note/helpers"
 require_relative "./fake_fs_context"
 
 describe Note::CLI do
   describe "note init %FOLDER_NAME%" do
+    include Helpers
     include_context "fake_fs"
 
     subject :run do
@@ -49,6 +51,7 @@ describe Note::CLI do
         run
 
         expect(File).to exist(today_note_file)
+        expect(File.read(today_note_file)).to eq("# Today\n")
       end
     end
 
@@ -57,6 +60,16 @@ describe Note::CLI do
         expect(cli).to receive(:system).with("code #{today_note_file}")
 
         run
+      end
+    end
+
+    it "creates a README file" do
+      FakeFS.with_fresh do
+        run
+
+        readme_file = File.join(Dir.pwd, notes_folder_name, "README.md")
+
+        expect(File).to exist(readme_file)
       end
     end
   end

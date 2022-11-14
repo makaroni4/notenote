@@ -28,6 +28,7 @@ describe Note::CLI do
         run
 
         expect(File).to exist(note_file)
+        expect(File.read(note_file)).to eq("# Transformer neural networks\n")
       end
     end
 
