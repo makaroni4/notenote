@@ -1,8 +1,11 @@
 require "spec_helper"
 require_relative "../../../../lib/note/cli"
+require_relative "./fake_fs_context"
 
 describe Note::CLI do
   describe "note init %FOLDER_NAME%" do
+    include_context "fake_fs"
+
     subject :run do
       clone_config_file!
 
@@ -11,8 +14,6 @@ describe Note::CLI do
 
     let(:cli) { described_class.new }
     let(:notes_folder_name) { "my_notes" }
-    let(:config_file) { File.join(Dir.home, described_class::CONFIG_FILE_NAME) }
-    let(:config) { JSON.parse(File.read(config_file)) }
     let(:notes_folder) { File.join(Dir.pwd, notes_folder_name) }
     let(:today_note_file) { File.join(notes_folder, Date.today.strftime("%d-%m-%Y"), "today.md") }
 
@@ -61,14 +62,6 @@ describe Note::CLI do
 
         expect(File).to exist(today_note_file)
       end
-    end
-
-    private
-
-    def clone_config_file!
-      config_template = File.expand_path("../../../../../lib/note/config.json.template", __FILE__)
-
-      FakeFS::FileSystem.clone(config_template)
     end
   end
 end
