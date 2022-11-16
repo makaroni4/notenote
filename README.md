@@ -25,6 +25,12 @@ alias np="note push!"
 alias na="note all"
 ```
 
+## VS Code extension
+
+Make sure to install [the notenote extension for VS Code](https://marketplace.visualstudio.com/items?itemName=makaroni4.notenote-vscode).
+
+The extension will copy images or files from your notes to the notes folder.
+
 ## Config
 
 `note init` command also generates a `.notenote` config file in your home folder:
