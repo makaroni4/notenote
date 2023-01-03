@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title><%= note_name %></title>
+  <title>Notes</title>
 
   <link rel="stylesheet" href="./assets/normalize.css">
   <style>
@@ -57,12 +57,6 @@
       }
     }
   </style>
-
-  <script>
-    window.state = {
-      noteFile: "<%= note_file %>"
-    }
-  </script>
 </head>
 <body>
   <div class="note">
@@ -73,16 +67,16 @@
     </nav>
 
     <div class="note__body">
-      <%= note_body %>
+      <h1>Notes</h1>
+
+      <ul>
+        <% notes.each do |note| %>
+          <li>
+            <a href="<%= note[:file] %>"><%= note[:name] %></a>
+          </li>
+        <% end %>
+      </ul>
     </div>
   </div>
-
-  <script>
-    document.addEventListener("keydown", (e) => {
-      if(e.key === ".") {
-        window.open(`vscode://file/${window.state.noteFile}`);
-      }
-    });
-  </script>
 </body>
 </html>

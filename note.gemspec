@@ -16,7 +16,8 @@ Gem::Specification.new do |spec|
   spec.files         = Dir["lib/**/*.rb"] +
                        [
                         "lib/note/config.json.template",
-                        "lib/note/note.html.erb"
+                        "lib/note/note.html.erb",
+                        "lib/note/index.html.erb"
                        ] +
                        Dir["lib/note/assets/**/*"] +
                        ["LICENSE.txt"]
