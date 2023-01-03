@@ -336,7 +336,7 @@ module Note
 
       FileUtils.cp_r(
         File.join(File.dirname(__FILE__), "assets"),
-        File.join(TMP_FOLDER, "assets")
+        File.join(TMP_FOLDER)
       )
 
       temp_note_file = File.join(TMP_FOLDER, note_page_file_name)
