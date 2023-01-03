@@ -18,6 +18,7 @@ Gem::Specification.new do |spec|
                         "lib/note/config.json.template",
                         "lib/note/note.html.erb"
                        ] +
+                       Dir["lib/note/assets/**/*"] +
                        ["LICENSE.txt"]
 
   spec.executables   = ["note"]

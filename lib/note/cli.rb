@@ -125,6 +125,11 @@ module Note
 
         FileUtils.mkdir(TMP_FOLDER) unless Dir.exist?(TMP_FOLDER)
 
+        FileUtils.cp_r(
+          File.join(File.dirname(__FILE__), "assets"),
+          File.join(TMP_FOLDER, "assets")
+        )
+
         temp_note_file = File.join(TMP_FOLDER, "random.html")
 
         File.open(temp_note_file, "w") do |file|
