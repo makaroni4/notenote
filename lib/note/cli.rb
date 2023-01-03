@@ -114,13 +114,14 @@ module Note
 
         random_note = File.read(Dir[File.join(notes_folder, "**/*.md")].sample)
 
-        random_note.gsub!(URI.regexp, '<\0>')
+        note_html = Kramdown::Document.new(random_note, parse_block_html: true).to_html
+        note_html.gsub!(URI.regexp, '<\0>')
 
         note_template = File.read(File.join(File.dirname(__FILE__), "note.html.erb"))
 
         note_page = ERB.new(note_template).result_with_hash(
           note_name: Nokogiri::HTML(random_note).css("h1")&.text || "Random note",
-          note_body: Kramdown::Document.new(random_note, parse_block_html: true).to_html
+          note_body: note_html
         )
 
         FileUtils.mkdir(TMP_FOLDER) unless Dir.exist?(TMP_FOLDER)
