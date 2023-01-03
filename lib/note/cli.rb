@@ -309,7 +309,13 @@ module Note
     def render_note(note_file)
       notes_folder = notenote_config["notes_folder"]
 
-      note_html = Kramdown::Document.new(File.read(note_file), parse_block_html: true).to_html
+      raw_note = File.read(note_file)
+
+      files_folder = File.join(File.dirname(note_file), "files")
+
+      raw_note.gsub!("(./files/", "(#{files_folder}/")
+
+      note_html = Kramdown::Document.new(raw_note, parse_block_html: true).to_html
       note_html.gsub!(URI.regexp, '<\0>')
 
       note_template = File.read(File.join(File.dirname(__FILE__), "note.html.erb"))
