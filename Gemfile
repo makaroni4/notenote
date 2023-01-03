@@ -1,8 +1,9 @@
 source "https://rubygems.org"
 
-require "pp"
-
 gemspec
+
+gem "kramdown"
+gem "nokogiri"
 
 group :test do
   gem "fakefs", require: false

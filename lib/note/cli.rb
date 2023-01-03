@@ -2,7 +2,14 @@
 
 require "optparse"
 require "json"
+require "pp"
 require "date"
+require "byebug"
+require "fileutils"
+require "kramdown"
+require "nokogiri"
+require "uri"
+require "erb"
 require_relative "helpers"
 
 $LOAD_PATH << File.expand_path(__dir__)
@@ -12,6 +19,7 @@ module Note
     include Helpers
 
     CONFIG_FILE_NAME = ".notenote"
+    TMP_FOLDER = "/tmp/notenote"
 
     def run(args = [])
       if args.first == "init"
@@ -99,6 +107,31 @@ module Note
         0
       elsif args.first == "version"
         puts Note::VERSION
+
+        0
+      elsif args.first == "random"
+        notes_folder = notenote_config["notes_folder"]
+
+        random_note = File.read(Dir[File.join(notes_folder, "**/*.md")].sample)
+
+        random_note.gsub!(URI.regexp, '<\0>')
+
+        note_template = File.read(File.join(File.dirname(__FILE__), "note.html.erb"))
+
+        note_page = ERB.new(note_template).result_with_hash(
+          note_name: Nokogiri::HTML(random_note).css("h1")&.text || "Random note",
+          note_body: Kramdown::Document.new(random_note, parse_block_html: true).to_html
+        )
+
+        FileUtils.mkdir(TMP_FOLDER) unless Dir.exist?(TMP_FOLDER)
+
+        temp_note_file = File.join(TMP_FOLDER, "random.html")
+
+        File.open(temp_note_file, "w") do |file|
+          file.write(note_page)
+        end
+
+        system `open #{temp_note_file}`
 
         0
       elsif args.size == 0

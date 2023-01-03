@@ -14,7 +14,10 @@ Gem::Specification.new do |spec|
   spec.license       = "MIT"
 
   spec.files         = Dir["lib/**/*.rb"] +
-                       ["lib/note/config.json.template"] +
+                       [
+                        "lib/note/config.json.template",
+                        "lib/note/note.html.erb"
+                       ] +
                        ["LICENSE.txt"]
 
   spec.executables   = ["note"]
