@@ -5,10 +5,30 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title><%= note_name %></title>
+
+  <style>
+    .note {
+      max-width: 720px;
+      margin: 0 auto;
+
+      font-size: 18px;
+      line-height: 1.5;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      body {
+        background-color: #000;
+
+        color: #FFF;
+      }
+    }
+  </style>
 </head>
 <body>
-  <div>
-    <%= note_body %>
+  <div class="note">
+    <div class="note__body">
+      <%= note_body %>
+    </div>
   </div>
 </body>
 </html>
