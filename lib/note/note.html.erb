@@ -29,6 +29,13 @@
     <div class="note__body">
       <div><%= created_at.strftime("%B, %Y") %></div>
 
+      <div>
+        <strong>Tags</strong>
+        <% tags.each do |tag| %>
+          <%= tag %>
+        <% end %>
+      </div>
+
       <%= note_body %>
     </div>
   </div>

@@ -120,36 +120,7 @@ module Note
 
         0
       elsif args.first == "web"
-        notes = []
-
-        notes_folder = notenote_config["notes_folder"]
-
-        Dir[File.join(notes_folder, "**/*.md")].each do |note_file|
-          note = render_note(note_file)
-
-          notes.push(note)
-        end
-
-        template = File.read(File.join(File.dirname(__FILE__), "index.html.erb"))
-
-        index_page = ERB.new(template).result_with_hash(
-          notes: notes
-        )
-
-        FileUtils.mkdir(TMP_FOLDER) unless Dir.exist?(TMP_FOLDER)
-
-        FileUtils.cp_r(
-          File.join(File.dirname(__FILE__), "assets"),
-          File.join(TMP_FOLDER, "assets")
-        )
-
-        index_file = File.join(TMP_FOLDER, "index.html")
-
-        File.open(index_file, "w") do |file|
-          file.write(index_page)
-        end
-
-        system `open #{index_file}`
+        render_index_page
 
         0
       elsif args.size == 0
@@ -315,6 +286,14 @@ module Note
 
       raw_note.gsub!("(./files/", "(#{files_folder}/")
 
+      tags = []
+
+      raw_note.gsub!(/(#\w+|#"[\s\w]+"|#'[\s\w]+')/) do |tag|
+        tags.push(tag)
+
+        ""
+      end
+
       note_html = Kramdown::Document.new(raw_note, parse_block_html: true).to_html
       note_html.gsub!(URI.regexp, '<\0>')
 
@@ -332,7 +311,8 @@ module Note
         note_name: note_name,
         note_body: note_html,
         note_file: note_file,
-        note_page_file_name: note_page_file_name
+        note_page_file_name: note_page_file_name,
+        tags: tags
       )
 
       FileUtils.mkdir(TMP_FOLDER) unless Dir.exist?(TMP_FOLDER)
@@ -342,7 +322,7 @@ module Note
         File.join(TMP_FOLDER)
       )
 
-      temp_note_file = File.join(TMP_FOLDER, note_page_file_name)
+      temp_note_file = File.join(TMP_FOLDER, "notes", note_page_file_name)
 
       File.open(temp_note_file, "w") do |file|
         file.write(note_page)
@@ -350,8 +330,42 @@ module Note
 
       {
         name: note_name,
-        file: temp_note_file
+        file: temp_note_file,
+        tags: tags
       }
+    end
+
+    def render_index_page
+      notes = []
+
+      notes_folder = notenote_config["notes_folder"]
+
+      Dir[File.join(notes_folder, "**/*.md")].each do |note_file|
+        note = render_note(note_file)
+
+        notes.push(note)
+      end
+
+      template = File.read(File.join(File.dirname(__FILE__), "index.html.erb"))
+
+      index_page = ERB.new(template).result_with_hash(
+        notes: notes
+      )
+
+      FileUtils.mkdir(TMP_FOLDER) unless Dir.exist?(TMP_FOLDER)
+
+      FileUtils.cp_r(
+        File.join(File.dirname(__FILE__), "assets"),
+        File.join(TMP_FOLDER, "assets")
+      )
+
+      index_file = File.join(TMP_FOLDER, "index.html")
+
+      File.open(index_file, "w") do |file|
+        file.write(index_page)
+      end
+
+      system `open #{index_file}`
     end
   end
 end
