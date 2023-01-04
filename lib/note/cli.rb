@@ -325,7 +325,10 @@ module Note
 
       note_page_file_name = File.basename(note_file).gsub(".md", ".html")
 
+      created_at = File.birthtime(note_file)
+
       note_page = ERB.new(note_template).result_with_hash(
+        created_at: created_at,
         note_name: note_name,
         note_body: note_html,
         note_file: note_file,

@@ -47,8 +47,15 @@ img {
   padding: 12px 0;
 
   background-color: #E6F6FF;
+}
 
-  text-decoration: underline;
+.nav__container {
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.nav__logo {
+  text-decoration: none;
 }
 
 @media (prefers-color-scheme: dark) {
