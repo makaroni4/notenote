@@ -112,32 +112,15 @@ module Note
       elsif args.first == "random"
         notes_folder = notenote_config["notes_folder"]
 
-        random_note = File.read(Dir[File.join(notes_folder, "**/*.md")].sample)
+        random_note = Dir[File.join(notes_folder, "**/*.md")].sample
 
-        note_html = Kramdown::Document.new(random_note, parse_block_html: true).to_html
-        note_html.gsub!(URI.regexp, '<\0>')
+        rendered_note_file = render_note(random_note)
 
-        note_template = File.read(File.join(File.dirname(__FILE__), "note.html.erb"))
+        system `open #{rendered_note_file[:file]}`
 
-        note_page = ERB.new(note_template).result_with_hash(
-          note_name: Nokogiri::HTML(random_note).css("h1")&.text || "Random note",
-          note_body: note_html
-        )
-
-        FileUtils.mkdir(TMP_FOLDER) unless Dir.exist?(TMP_FOLDER)
-
-        FileUtils.cp_r(
-          File.join(File.dirname(__FILE__), "assets"),
-          File.join(TMP_FOLDER, "assets")
-        )
-
-        temp_note_file = File.join(TMP_FOLDER, "random.html")
-
-        File.open(temp_note_file, "w") do |file|
-          file.write(note_page)
-        end
-
-        system `open #{temp_note_file}`
+        0
+      elsif args.first == "web"
+        render_index_page
 
         0
       elsif args.size == 0
@@ -292,6 +275,97 @@ module Note
       date_format = notenote_config["date_format"]
 
       Date.today.strftime(date_format)
+    end
+
+    def render_note(note_file)
+      notes_folder = notenote_config["notes_folder"]
+
+      raw_note = File.read(note_file)
+
+      files_folder = File.join(File.dirname(note_file), "files")
+
+      raw_note.gsub!("(./files/", "(#{files_folder}/")
+
+      tags = []
+
+      raw_note.gsub!(/(#\w+|#"[\s\w]+"|#'[\s\w]+')/) do |tag|
+        tags.push(tag)
+
+        ""
+      end
+
+      note_html = Kramdown::Document.new(raw_note, parse_block_html: true).to_html
+      note_html.gsub!(URI.regexp, '<\0>')
+
+      note_template = File.read(File.join(File.dirname(__FILE__), "note.html.erb"))
+
+      note_name = Nokogiri::HTML(note_html).css("h1")&.text
+      note_name = note_name == "" ? File.basename(note_file).gsub(".md", "").gsub("_", " ") : note_name
+
+      note_page_file_name = File.basename(note_file).gsub(".md", ".html")
+
+      created_at = File.birthtime(note_file)
+
+      note_page = ERB.new(note_template).result_with_hash(
+        created_at: created_at,
+        note_name: note_name,
+        note_body: note_html,
+        note_file: note_file,
+        note_page_file_name: note_page_file_name,
+        tags: tags
+      )
+
+      FileUtils.mkdir(TMP_FOLDER) unless Dir.exist?(TMP_FOLDER)
+
+      FileUtils.cp_r(
+        File.join(File.dirname(__FILE__), "assets"),
+        File.join(TMP_FOLDER)
+      )
+
+      temp_note_file = File.join(TMP_FOLDER, "notes", note_page_file_name)
+
+      File.open(temp_note_file, "w") do |file|
+        file.write(note_page)
+      end
+
+      {
+        name: note_name,
+        file: temp_note_file,
+        tags: tags
+      }
+    end
+
+    def render_index_page
+      notes = []
+
+      notes_folder = notenote_config["notes_folder"]
+
+      Dir[File.join(notes_folder, "**/*.md")].each do |note_file|
+        note = render_note(note_file)
+
+        notes.push(note)
+      end
+
+      template = File.read(File.join(File.dirname(__FILE__), "index.html.erb"))
+
+      index_page = ERB.new(template).result_with_hash(
+        notes: notes
+      )
+
+      FileUtils.mkdir(TMP_FOLDER) unless Dir.exist?(TMP_FOLDER)
+
+      FileUtils.cp_r(
+        File.join(File.dirname(__FILE__), "assets"),
+        File.join(TMP_FOLDER, "assets")
+      )
+
+      index_file = File.join(TMP_FOLDER, "index.html")
+
+      File.open(index_file, "w") do |file|
+        file.write(index_page)
+      end
+
+      system `open #{index_file}`
     end
   end
 end

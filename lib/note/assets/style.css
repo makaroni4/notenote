@@ -1,0 +1,67 @@
+body {
+  font-size: 18px;
+  line-height: 1.5;
+}
+
+.note {
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.note__menu-icon {
+  position: absolute;
+  top: 12
+  width: 32px;
+  height: 32px;
+}
+
+/* https://css-tricks.com/snippets/css/simple-and-nice-blockquote-styling/ */
+blockquote {
+  background: #f9f9f9;
+  border-left: 10px solid #ccc;
+  margin: 1.5em 0;
+  padding: 0.5em 10px;
+  quotes: "\201C""\201D""\2018""\2019";
+}
+
+blockquote:before {
+  color: #ccc;
+  content: open-quote;
+  font-size: 4em;
+  line-height: 0.1em;
+  margin-right: 0.25em;
+  vertical-align: -0.4em;
+}
+
+blockquote p {
+  display: inline;
+  font-size: 24px;
+  line-height: 1.5;
+}
+
+img {
+  max-width: 100%;
+}
+
+.nav {
+  padding: 12px 0;
+
+  background-color: #E6F6FF;
+}
+
+.nav__container {
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.nav__logo {
+  text-decoration: none;
+}
+
+@media (prefers-color-scheme: dark) {
+  body {
+    background-color: #000;
+
+    color: #FFF;
+  }
+}

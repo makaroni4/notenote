@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Notes</title>
+
+  <link rel="stylesheet" href="./assets/normalize.css">
+  <link rel="stylesheet" href="./assets/style.css">
+</head>
+<body>
+  <nav class="nav">
+    <div class="nav__container">
+      <strong><a class="nav__logo" href="index.html">NOTES</a></strong>
+    </div>
+  </nav>
+
+  <div class="note">
+    <div class="note__body">
+      <h1>Notes</h1>
+
+      <ul>
+        <% notes.each do |note| %>
+          <li>
+            <a href="<%= note[:file] %>"><%= note[:name] %></a>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+</body>
+</html>
